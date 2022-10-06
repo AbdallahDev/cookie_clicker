@@ -27,10 +27,11 @@ while True:
 
     second = datetime.now().second
     minute = datetime.now().minute
+    hour = datetime.now().hour
 
     driver.find_element(By.ID, 'bigCookie').click()
 
-    if minute % 3 == 0 and second % 60 == 0:
+    if minute % 5 == 0 and second % 60 == 0:
         # if minute % 5 == 0 and second % 60 == 0:
         upgrades = driver.find_elements(By.CSS_SELECTOR, '.crate.upgrade.enabled')
         upgrades_count = len(upgrades)
@@ -46,4 +47,4 @@ while True:
                 print(
                     f'{highest_product.find_element(By.CSS_SELECTOR, ".title.productName").get_property("textContent")} bought')
 
-        print(f"{minute}:{second}:: upgrades: {upgrades_count}, products: {products_count}")
+        print(f"{hour}:{minute}:{second}:: upgrades: {upgrades_count}, products: {products_count}")

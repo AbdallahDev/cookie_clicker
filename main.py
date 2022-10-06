@@ -48,3 +48,5 @@ while True:
                     f'{highest_product.find_element(By.CSS_SELECTOR, ".title.productName").get_property("textContent")} bought')
 
         print(f"{hour}:{minute}:{second}:: upgrades: {upgrades_count}, products: {products_count}")
+
+# TODO: save to from options every 25 minutes

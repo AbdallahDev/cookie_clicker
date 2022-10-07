@@ -45,6 +45,37 @@ class Cookie:
         self.driver.find_element(By.ID, 'langSelect-EN').click()
         time.sleep(5)
 
+    def accept_cookies(self):
+        cookies_btn = self.driver.find_element(By.CSS_SELECTOR, '.cc_btn.cc_btn_accept_all')
+        cookies_btn.click()
+        time.sleep(0.1)
+
+    def load_file(self):
+        # press the options button to open the menu
+        options_btn = self.driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
+        options_btn.click()
+
+        load_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[2]')
+        load_file_btn.click()
+
+        # press the options button to close the menu
+        options_btn.click()
+
+        time.sleep(10)
+
+    def gameplay(self):
+        print("GamePlay started :-)\n")
+        while True:
+            self.click_cookie()
+
+            # I'll buy from the store and save the progress every 5 minutes
+            if time_to_act():
+                self.buy_upgrade()
+                self.buy_product()
+                self.save_to_file()
+
+                print()
+
     def buy_upgrade(self):
         upgrades = self.driver.find_elements(By.CSS_SELECTOR, '.crate.upgrade.enabled')
         upgrades_count = len(upgrades)
@@ -65,11 +96,6 @@ class Cookie:
                 f'bought')
             time.sleep(0.1)
 
-    def accept_cookies(self):
-        cookies_btn = self.driver.find_element(By.CSS_SELECTOR, '.cc_btn.cc_btn_accept_all')
-        cookies_btn.click()
-        time.sleep(0.1)
-
     def save_to_file(self):
         # save the game progress
         # press the options button to open the menu
@@ -85,28 +111,6 @@ class Cookie:
 
         time.sleep(0.1)
 
-    def load_file(self):
-        # press the options button to open the menu
-        options_btn = self.driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
-        options_btn.click()
-
-        load_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[2]')
-        load_file_btn.click()
-
-        # press the options button to close the menu
-        options_btn.click()
-
-        time.sleep(10)
-
-    def gameplay(self):
-        print("GamePlay started :-)")
-        while True:
-            self.driver.find_element(By.ID, 'bigCookie').click()
-
-            # I'll buy from the store and save the progress every 5 minutes
-            if time_to_act():
-                self.buy_upgrade()
-                self.buy_product()
-                self.save_to_file()
-
-                print()
+    def click_cookie(self):
+        time.sleep(0.1)
+        self.driver.find_element(By.ID, 'bigCookie').click()

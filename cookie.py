@@ -7,6 +7,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime
 
 
+def time_to_act():
+    microseconds = datetime.now().microsecond
+    second = datetime.now().second
+    minute = datetime.now().minute
+    hour = datetime.now().hour
+
+    if minute % 5 == 0 and second == 0 and microseconds < 100000:
+        # print time of the action
+        print(
+            f"{hour}:{minute}:{second}:{microseconds}")
+        return True
+
+
 class Cookie:
     def __init__(self):
         self.options = webdriver.ChromeOptions()
@@ -15,6 +28,7 @@ class Cookie:
         self.set_window()
         self.get_website()
         self.select_language()
+        self.accept_cookies()
         self.load_file()
         self.gameplay()
 
@@ -30,18 +44,6 @@ class Cookie:
         time.sleep(5)
         self.driver.find_element(By.ID, 'langSelect-EN').click()
         time.sleep(5)
-
-    def time_to_act(self):
-        microseconds = datetime.now().microsecond
-        second = datetime.now().second
-        minute = datetime.now().minute
-        hour = datetime.now().hour
-
-        if minute % 5 == 0 and second == 0 and microseconds < 100000:
-            # print time of the action
-            print(
-                f"{hour}:{minute}:{second}:{microseconds}")
-            return True
 
     def buy_upgrade(self):
         upgrades = self.driver.find_elements(By.CSS_SELECTOR, '.crate.upgrade.enabled')
@@ -63,6 +65,11 @@ class Cookie:
                 f'bought')
             time.sleep(0.1)
 
+    def accept_cookies(self):
+        cookies_btn = self.driver.find_element(By.CSS_SELECTOR, '.cc_btn.cc_btn_accept_all')
+        cookies_btn.click()
+        time.sleep(0.1)
+
     def save_to_file(self):
         # save the game progress
         # press the options button to open the menu
@@ -79,7 +86,6 @@ class Cookie:
         time.sleep(0.1)
 
     def load_file(self):
-        # time.sleep(20)
         # press the options button to open the menu
         options_btn = self.driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
         options_btn.click()
@@ -87,6 +93,7 @@ class Cookie:
         load_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[2]')
         load_file_btn.click()
 
+        # press the options button to close the menu
         options_btn.click()
 
         time.sleep(10)
@@ -97,11 +104,9 @@ class Cookie:
             self.driver.find_element(By.ID, 'bigCookie').click()
 
             # I'll buy from the store and save the progress every 5 minutes
-            if self.time_to_act():
+            if time_to_act():
                 self.buy_upgrade()
                 self.buy_product()
                 self.save_to_file()
 
                 print()
-
-# todo accept the website cookies

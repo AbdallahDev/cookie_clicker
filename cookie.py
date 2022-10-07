@@ -112,7 +112,7 @@ class Cookie:
         time.sleep(0.1)
 
     def click_cookie(self):
-        time.sleep(0.33)
+        time.sleep(0.20)
         self.driver.find_element(By.ID, 'bigCookie').click()
 
 # todo make an exception handling for the elements findings

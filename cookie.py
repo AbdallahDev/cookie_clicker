@@ -15,6 +15,7 @@ class Cookie:
         self.set_window()
         self.get_website()
         self.select_language()
+        self.load_file()
         self.gameplay()
 
     def set_window(self):
@@ -36,7 +37,7 @@ class Cookie:
         minute = datetime.now().minute
         hour = datetime.now().hour
 
-        if minute % 2 == 0 and second == 0 and microseconds < 100000:
+        if minute % 5 == 0 and second == 0 and microseconds < 100000:
             # print time of the action
             print(
                 f"{hour}:{minute}:{second}:{microseconds}")
@@ -77,10 +78,22 @@ class Cookie:
 
         time.sleep(0.1)
 
-    def gameplay(self):
-        while True:
-            time.sleep(0.1)
+    def load_file(self):
+        # time.sleep(20)
+        # press the options button to open the menu
+        options_btn = self.driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
+        options_btn.click()
 
+        load_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[2]')
+        load_file_btn.click()
+
+        options_btn.click()
+
+        time.sleep(10)
+
+    def gameplay(self):
+        print("GamePlay started :-)")
+        while True:
             self.driver.find_element(By.ID, 'bigCookie').click()
 
             # I'll buy from the store and save the progress every 5 minutes
@@ -91,4 +104,4 @@ class Cookie:
 
                 print()
 
-#  accept the website cookies
+# todo accept the website cookies

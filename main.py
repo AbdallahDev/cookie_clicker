@@ -12,7 +12,7 @@ driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverMan
 
 url = "https://orteil.dashnet.org/cookieclicker/"
 driver.set_window_position(400, 0)
-driver.set_window_size(width=1500, height=1040)
+driver.set_window_size(width=1525, height=1045)
 
 driver.get(url)
 
@@ -25,6 +25,7 @@ products_count = 0
 while True:
     time.sleep(0.1)
 
+    microseconds = datetime.now().microsecond
     second = datetime.now().second
     minute = datetime.now().minute
     hour = datetime.now().hour
@@ -32,7 +33,7 @@ while True:
     driver.find_element(By.ID, 'bigCookie').click()
 
     # I'll buy from the store and save the progress every 5 minutes
-    if minute % 5 == 0 and second == 0:
+    if minute % 5 == 0 and second == 0 and microseconds < 100000:
         upgrades = driver.find_elements(By.CSS_SELECTOR, '.crate.upgrade.enabled')
         upgrades_count = len(upgrades)
         if len(upgrades) > 0:
@@ -47,4 +48,19 @@ while True:
                 print(
                     f'{highest_product.find_element(By.CSS_SELECTOR, ".title.productName").get_property("textContent")} bought')
 
-        print(f"{hour}:{minute}:{second}:: upgrades: {upgrades_count}, products: {products_count}")
+        print(f"{hour}:{minute}:{second}:{microseconds}:: upgrades: {upgrades_count}, products: {products_count}")
+
+        # save the game progress
+        # press the options button to open the menu
+        options_btn = driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
+        options_btn.click()
+        # press save to file button
+        save_to_file_btn = driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[1]')
+        save_to_file_btn.click()
+        print("File saved")
+        # press the options button to close the menu
+        options_btn = driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
+        options_btn.click()
+
+        print()
+

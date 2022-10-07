@@ -50,17 +50,4 @@ while True:
 
         print(f"{hour}:{minute}:{second}:{microseconds}:: upgrades: {upgrades_count}, products: {products_count}")
 
-        # save the game progress
-        # press the options button to open the menu
-        options_btn = driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
-        options_btn.click()
-        # press save to file button
-        save_to_file_btn = driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[1]')
-        save_to_file_btn.click()
-        print("File saved")
-        # press the options button to close the menu
-        options_btn = driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
-        options_btn.click()
-
         print()
-

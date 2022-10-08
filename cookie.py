@@ -1,5 +1,6 @@
 import time
 
+import selenium.common.exceptions
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
@@ -13,7 +14,8 @@ def time_to_act():
     minute = datetime.now().minute
     hour = datetime.now().hour
 
-    if minute % 5 == 0 and second == 0 and microseconds < 100000:
+    # if second % 10 == 0 and microseconds < 300000:
+    if minute % 5 == 0 and second == 0 and microseconds < 300000:
         # print time of the action
         print(
             f"{hour}:{minute}:{second}:{microseconds}")
@@ -78,7 +80,6 @@ class Cookie:
 
     def buy_upgrade(self):
         upgrades = self.driver.find_elements(By.CSS_SELECTOR, '.crate.upgrade.enabled')
-        upgrades_count = len(upgrades)
         if len(upgrades) > 0:
             # click the most efficient upgrade
             upgrades[-1].click()
@@ -87,7 +88,6 @@ class Cookie:
 
     def buy_product(self):
         products = self.driver.find_elements(By.CSS_SELECTOR, '.product.unlocked.enabled')
-        products_total = len(products)
         if len(products) > 0:
             highest_product = products[-1]
             highest_product.click()
@@ -102,9 +102,14 @@ class Cookie:
         options_btn = self.driver.find_element(By.CSS_SELECTOR, '#prefsButton .subButton')
         options_btn.click()
         # press save to file button
-        save_to_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[1]')
-        save_to_file_btn.click()
-        print("File saved")
+        try:
+            save_to_file_btn = self.driver.find_element(By.XPATH, '//*[@id="menu"]/div[3]/div/div[5]/a[1]')
+        except selenium.common.exceptions.NoSuchElementException:
+            # press the options button to close the menu
+            options_btn.click()
+        else:
+            save_to_file_btn.click()
+            print("File saved")
 
         # press the options button to close the menu
         options_btn.click()
@@ -112,7 +117,9 @@ class Cookie:
         time.sleep(0.1)
 
     def click_cookie(self):
-        time.sleep(0.20)
-        self.driver.find_element(By.ID, 'bigCookie').click()
-
-# todo make an exception handling for the elements findings
+        time.sleep(0.33)
+        cookie_btn = self.driver.find_element(By.ID, 'bigCookie')
+        try:
+            cookie_btn.click()
+        except selenium.common.exceptions.ElementClickInterceptedException:
+            self.gameplay()

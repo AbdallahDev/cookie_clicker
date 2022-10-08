@@ -1,2 +1,2 @@
 # cookie_clicker
-this is an automated code for the cookie clicker brawser based game.
+this is an automated code for the cookie clicker browser based game.
